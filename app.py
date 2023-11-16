@@ -18,12 +18,19 @@ def test():
     if request.method == "POST":
         data = request.get_json()
         
-        # do something here
         print(data)
         
+        if data['data']['t'] == 'msg':
+            response_data = {
+                "t": "answer",
+                "time": time.asctime(),
+                "answer": data['data']['msg']
+            }
+            return jsonify(response_data)
+
         response_data = {
-            "message": time.asctime(),
-            "payload": "Hello, World!"
+            "type": "dunno",
+            "answer": "Hello, World!"
         }
         return jsonify(response_data)
 

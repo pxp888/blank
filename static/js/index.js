@@ -26,7 +26,7 @@ async function postmsg(e) {
 	e.preventDefault();
 	const msg = $("#msgLine").val();
 
-	const data = {'msg': msg};
+	const data = { 't':'msg', 'msg': msg };
 	sendmsg(data);
 }
 
