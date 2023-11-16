@@ -17,11 +17,13 @@ def index():
 def test():
     if request.method == "POST":
         data = request.get_json()
+        
+        # do something here
         print(data)
         
         response_data = {
             "message": time.asctime(),
-            "payload": data['data']['msg']
+            "payload": "Hello, World!"
         }
         return jsonify(response_data)
 

@@ -2,29 +2,34 @@ const say = msg => console.log(msg);
 
 const URL="/test";
 
-function doSomething(data) {
-	say(data);
-	const p = document.createElement('p');
-	p.innerText = data['payload'];
-	$('#form').append(p);
-}
-
-async function postmsg(e) {
-	e.preventDefault();
-	const msg = $("#msgLine").val();
-	
+async function sendmsg(data) {
 	const response = fetch('/test', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			data: { "msg": msg }
+			data
 		})
 	})
 
 	.then(response => response.json())
-	.then(data => doSomething(data))
+	.then(data => getmsg(data))
 	.catch(error => console.error('Error sending data:', error));
 }
+
+
+function getmsg(data) {
+	say(data);
+}
+
+
+async function postmsg(e) {
+	e.preventDefault();
+	const msg = $("#msgLine").val();
+
+	const data = {'msg': msg};
+	sendmsg(data);
+}
+
 
 $('#form').on('keydown', 'input[type="text"]', function(e) {
 	if (e.which == 13) { // 13 is the keycode for Enter
@@ -33,3 +38,4 @@ $('#form').on('keydown', 'input[type="text"]', function(e) {
 });
 
 $("#submit").on("click", postmsg);
+
