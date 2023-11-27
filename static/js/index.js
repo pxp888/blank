@@ -1,6 +1,9 @@
 const say = msg => console.log(msg);
 
+
 const URL="/test";
+const rfuncs = {};
+
 
 async function sendmsg(data) {
 	const response = fetch('/test', {
@@ -10,7 +13,6 @@ async function sendmsg(data) {
 			data
 		})
 	})
-
 	.then(response => response.json())
 	.then(data => getmsg(data))
 	.catch(error => console.error('Error sending data:', error));
@@ -18,24 +20,19 @@ async function sendmsg(data) {
 
 
 function getmsg(data) {
-	say(data);
+	if (data['t'] in rfuncs) {
+		rfuncs[data['t']](data);
+	}
+	else { say('no js handler for ' + data['t']); }
 }
 
 
-async function postmsg(e) {
-	e.preventDefault();
-	const msg = $("#msgLine").val();
+// ############################ LOGIC ############################
 
-	const data = { 't':'msg', 'msg': msg };
+
+async function statPressed(e) {
+	const data = { 't':'stat' };
 	sendmsg(data);
 }
-
-
-$('#form').on('keydown', 'input[type="text"]', function(e) {
-	if (e.which == 13) { // 13 is the keycode for Enter
-		e.preventDefault();
-	}
-});
-
-$("#submit").on("click", postmsg);
+rfuncs['stat'] = groupAnswer;
 
